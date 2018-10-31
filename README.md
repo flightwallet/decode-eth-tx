@@ -1,6 +1,6 @@
 # decode-eth-tx
 
-JS tool to decode ethereum transactions. Deployed at http://flightwallet.org/decode-eth-tx/
+JS tool to decode ethereum transactions. Deployed at https://flightwallet.org/decode-eth-tx/
 
 Try this tx:
 
