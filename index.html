@@ -1,0 +1,32 @@
+<html>
+<head>
+<script src="ethereumjs-tx-1.3.3.js"></script>
+<!-- <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script> -->
+<!-- <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/master/dist/ethereumjs-tx.js"></script> -->
+<title>Decode Ethereum Raw Transaction</title>
+</head>
+<body>
+<script type="text/javascript">
+function decodeMyTx() {
+    var serializedTx = document.getElementById("inputarea").value.trim();
+    var tx = new ethereumjs.Tx(serializedTx);
+    var rawTx = {
+        nonce: parseInt(tx.nonce.toString('hex'),16),
+        gasPrice: parseInt(tx.gasPrice.toString('hex'),16),
+        gasLimit: parseInt(tx.gasLimit.toString('hex'),16),
+        to: '0x'+tx.to.toString('hex'),
+        value: parseInt(tx.value.toString('hex'), 16),
+        data: tx.data.toString('hex')
+    };
+    document.getElementById("outputarea").value = JSON.stringify(rawTx, null, "  ");
+}
+</script>
+<h1>Decode serialized transaction</h1>
+<textarea name="inputarea" id="inputarea"  cols="100" rows="10">
+</textarea>
+<br />
+<input type="submit" value="Decode" onclick="decodeMyTx()"/>
+<br />
+<textarea name="outputarea" id="outputarea"  cols="100" rows="20">
+</textarea>
+</body>
