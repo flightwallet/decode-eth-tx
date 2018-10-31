@@ -20,3 +20,10 @@ It should decode to:
   "data": "80"
 }
 ```
+
+
+# credit
+
+(c) Credit goes to https://reddit.com/user/dontmindme42
+
+https://www.reddit.com/r/ethereum/comments/48rf3d/weve_heard_you_loud_and_clear_so_tonightweve/d0m07bg/?context=3
