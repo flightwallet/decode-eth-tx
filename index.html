@@ -28,6 +28,9 @@ async function publishMyTx() {
   var outputtext = ''
   try {
     const result = await publishTx(serializedTx)
+      .on('transactionHash', hash => console.log('tx hash', hash))
+
+    console.log('result', result)
 
     outputtext = result.toString()
   } catch (err) {
