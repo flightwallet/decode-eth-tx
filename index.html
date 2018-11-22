@@ -1,24 +1,85 @@
 <html>
 <head>
 <script src="ethereumjs-tx-1.3.3.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
 <!-- <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script> -->
 <!-- <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/master/dist/ethereumjs-tx.js"></script> -->
-<title>Decode Ethereum Raw Transaction</title>
+<title>Decode and Publish Ethereum Raw Transaction</title>
 </head>
 <body>
 <script type="text/javascript">
 function decodeMyTx() {
     var serializedTx = document.getElementById("inputarea").value.trim();
-    var tx = new ethereumjs.Tx(serializedTx);
-    var rawTx = {
-        nonce: parseInt(tx.nonce.toString('hex'),16),
-        gasPrice: parseInt(tx.gasPrice.toString('hex'),16),
-        gasLimit: parseInt(tx.gasLimit.toString('hex'),16),
-        to: '0x'+tx.to.toString('hex'),
-        value: parseInt(tx.value.toString('hex'), 16),
-        data: tx.data.toString('hex')
-    };
-    document.getElementById("outputarea").value = JSON.stringify(rawTx, null, "  ");
+    var outputtext = ''
+
+    try {
+      const rawTx = decodeTx(serializedTx)
+
+      outputtext = JSON.stringify(rawTx, null, "  ");
+    } catch (err) {
+      outputtext = `Decode Error: ${err.toString()}`
+    }
+
+    document.getElementById("outputarea").value = outputtext
+}
+async function publishMyTx() {
+  var serializedTx = document.getElementById("inputarea").value.trim();
+// eb01843b9aca008252089417da6a8b86578cec4525945a355e8384025fa5af880de0b6b3a7640000001c8080
+  var outputtext = ''
+  try {
+    const result = await publishTx(serializedTx)
+
+    outputtext = result.toString()
+  } catch (err) {
+    outputtext = `Publish Error: ${err.toString()}`
+  }
+
+  document.getElementById("outputarea").value = outputtext
+}
+function publishTx(hex) {
+  return web3.eth.sendSignedTransaction(hex)
+}
+function decodeTx(hex) {
+  var tx = new ethereumjs.Tx(hex);
+  console.log('tx', tx)
+
+  var rawTx = {
+      nonce: parseInt(tx.nonce.toString('hex'),16),
+      gasPrice: parseInt(tx.gasPrice.toString('hex'),16),
+      gasLimit: parseInt(tx.gasLimit.toString('hex'),16),
+      to: '0x'+tx.to.toString('hex'),
+      value: parseInt(tx.value.toString('hex'), 16),
+      data: tx.data.toString('hex'),
+  };
+
+  if (tx.r.length) {
+    rawTx = {
+      ...rawTx,
+
+      from: '0x'+tx.from.toString('hex'),
+      r: tx.r.toString('hex'),
+      v: tx.v.toString('hex'),
+      s: tx.s.toString('hex'),
+    }
+  }
+
+  return rawTx
+}
+window.onload = () => {
+  const NETWORK = 'TESTNET'
+
+  const WEB3_PROVIDERS = {
+    MAINNET: new Web3.providers.HttpProvider(`https://mainnet.infura.io/JCnK5ifEPH9qcQkX0Ahl`),
+    TESTNET: new Web3.providers.HttpProvider(`https://rinkeby.infura.io/JCnK5ifEPH9qcQkX0Ahl`),
+    LOCALNET: new Web3.providers.HttpProvider(`http://localhost:7545`),
+  }
+
+  if (typeof web3 !== 'undefined') {
+    web3 = new Web3(web3.currentProvider)
+  } else {
+    // Set the provider you want from Web3.providers
+    web3 = new Web3(WEB3_PROVIDERS[NETWORK])
+  }
 }
 </script>
 <h1>Decode Ethereum serialized transaction</h1>
@@ -27,6 +88,7 @@ function decodeMyTx() {
 </textarea>
 <br />
 <input type="submit" value="Decode" onclick="decodeMyTx()"/>
+<input type="submit" value="Publish" onclick="publishMyTx()"/>
 <br />
 <textarea name="outputarea" id="outputarea"  cols="100" rows="20">
 </textarea>
