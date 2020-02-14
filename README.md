@@ -1,6 +1,6 @@
 # decode-eth-tx
 
-JS tool to decode ethereum transactions. Deployed at https://flightwallet.org/decode-eth-tx/
+JS tool to decode ethereum transactions. Deployed at https://flightwallet.github.io/decode-eth-tx
 
 Try this tx:
 
@@ -28,4 +28,4 @@ It should be decoded to:
 
 https://www.reddit.com/r/ethereum/comments/48rf3d/weve_heard_you_loud_and_clear_so_tonightweve/d0m07bg/?context=3
 
-[<img src="https://raw.githubusercontent.com/morejust/foundation/master/madebymorejust.png" width="100">](https://morejust.foundation/?from=decode-eth-tx)
+[<img src="https://raw.githubusercontent.com/morejust/foundation/master/madebymorejust.png" width="100">](https://morejust.github.io/?from=decode-eth-tx)
