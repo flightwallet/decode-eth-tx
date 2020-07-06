@@ -47,11 +47,11 @@ function decodeTx(hex) {
   console.log('tx', tx)
 
   var rawTx = {
-      nonce: parseInt(tx.nonce.toString('hex'),16),
+      nonce: parseInt(tx.nonce.toString('hex') || '0',16),
       gasPrice: parseInt(tx.gasPrice.toString('hex'),16),
       gasLimit: parseInt(tx.gasLimit.toString('hex'),16),
       to: '0x'+tx.to.toString('hex'),
-      value: parseInt(tx.value.toString('hex'), 16),
+      value: parseInt(tx.value.toString('hex') || '0', 16),
       data: tx.data.toString('hex'),
   };
 
